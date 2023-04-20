@@ -1,4 +1,34 @@
+const fs = require('fs');
 const chalk = require('chalk')
+
+function trataErro(erro) {
+  console.error(chalk.red(erro.code, 'Não há arquivo no diretório'));
+} // antes tava throw new Error mas não funcionou 
+
+function pegaArquivo(caminhoDoArquivo) {
+  const encoding = 'utf-8';
+  fs.readFile(caminhoDoArquivo, encoding, (erro, texto) => {
+    if (erro) {
+      trataErro(erro);
+    }
+    console.log(chalk.green(texto));
+  })
+}
+// caminho relativo
+pegaArquivo('./../SAP009-md-links/teste.md');
+
+
+
+
+
+
+
+
+
+
+
+
+/* const chalk = require('chalk')
 console.log(chalk.blue('Hello world!'));
 
 const path = require('path')
@@ -34,3 +64,4 @@ fs.readdir(__dirname, (err, files) => {
 const fullPath = path.join('/Documents/Lab/md-links/', 'SAP009-md-links');
 console.log(fullPath);
 
+ */
