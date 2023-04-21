@@ -2,26 +2,42 @@ const fs = require('fs');
 const chalk = require('chalk')
 
 function handleError(erro) {
-  console.error(chalk.red(erro.code, 'Não há arquivo no diretório'));
+  console.error(chalk.red(erro.code, 'Ocorreu um erro ao ler o arquivo'));
 } // antes tava throw new Error mas não funcionou 
 
 function takeFile(filePath) {
+  return new Promise ((resolve, reject) => {
+    fs.promises.readFile(filePath, 'utf-8')
+    .then(text => {
+      console.log(chalk.green(text));
+      resolve();
+    })
+    .catch(erro => {
+      handleError(erro);
+      reject(erro);
+    })
+  })
+}
+
+takeFile('./../SAP009-md-links/teste.md');
+takeFile('./../SAP009-md-links/');
+
+
+
+
+
+
+
+
+
+/* function takeFile(filePath) {
   const encoding = 'utf-8';
-  fs.promises
-     .readFile(filePath, encoding)
+  fs.promises.readFile(filePath, encoding)
     .then((text) => console.log(chalk.green(text)))
     .catch((handleError))
 }
 
-takeFile('./../SAP009-md-links/teste.md');
-
-
-
-
-
-
-
-
+takeFile('./../SAP009-md-links/teste.md'); */
 
 
 
