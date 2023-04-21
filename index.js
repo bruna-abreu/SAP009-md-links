@@ -1,21 +1,20 @@
 const fs = require('fs');
 const chalk = require('chalk')
 
-function trataErro(erro) {
+function handleError(erro) {
   console.error(chalk.red(erro.code, 'Não há arquivo no diretório'));
 } // antes tava throw new Error mas não funcionou 
 
-function pegaArquivo(caminhoDoArquivo) {
+function takeFile(filePath) {
   const encoding = 'utf-8';
-  fs.readFile(caminhoDoArquivo, encoding, (erro, texto) => {
-    if (erro) {
-      trataErro(erro);
-    }
-    console.log(chalk.green(texto));
-  })
+  fs.promises
+     .readFile(filePath, encoding)
+    .then((text) => console.log(chalk.green(text)))
+    .catch((handleError))
 }
-// caminho relativo
-pegaArquivo('./../SAP009-md-links/teste.md');
+
+takeFile('./../SAP009-md-links/teste.md');
+
 
 
 
