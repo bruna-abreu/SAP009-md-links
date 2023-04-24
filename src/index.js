@@ -5,33 +5,26 @@ function extractLinks(text) {
   const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
   const captures = [...text.matchAll(regex)];
   const results = captures.map(capture => ({[capture[1]]: capture[2]}))
-  console.log(results);
-
+  return results.length !== 0 ? results : 'não há links no arquivo';
 }
 
 function handleError(erro) {
   console.error(chalk.red(erro.code, 'Ocorreu um erro ao ler o arquivo'));
 } // antes tava throw new Error mas não funcionou 
 
-function takeFile(filePath) {
-  return new Promise ((resolve, reject) => {
-    fs.promises.readFile(filePath, 'utf-8')
-    .then(text => {
-      //console.log(chalk.green(text));
-      //extractLinks(text);
-      console.log(extractLinks(text));
-
-      resolve();
-    })
-    .catch(erro => {
-      handleError(erro);
-      reject(erro);
-    })
-  })
+function getFile(filePath) {
+  return fs.promises.readFile(filePath, 'utf-8')
+    .then((text) => extractLinks(text))
+    .catch((erro) => handleError(erro)); 
 }
 
-takeFile('./../SAP009-md-links/teste.md');
-//takeFile('./../SAP009-md-links/');
+//getFile('./readme.md')
+
+module.exports = {getFile, handleError};
+
+
+
+
 
 
 //  \[[^[\]]*?\]
