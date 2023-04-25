@@ -24,7 +24,8 @@
   "scripts": {
     "test": "jest --verbose --coverage",
     "eslint": "eslint *.js test/",
-    "pretest": "npm run eslint"
+    "pretest": "npm run eslint",
+    "cli": "node .src/cli.js"
   },
   "dependencies": {
     "chalk": "^4.0.0",

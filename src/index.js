@@ -1,5 +1,5 @@
 const fs = require('fs');
-const chalk = require('chalk')
+const chalk = require('chalk');
 
 function extractLinks(text) {
   const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
@@ -9,7 +9,7 @@ function extractLinks(text) {
 }
 
 function handleError(erro) {
-  console.error(chalk.red(erro.code, 'Ocorreu um erro ao ler o arquivo'));
+  console.error(chalk.red(erro.code, 'Ocorreu um erro ao ler o arquivo. Por favor confira as informações'));
 } // antes tava throw new Error mas não funcionou 
 
 function getFile(filePath) {
