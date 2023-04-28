@@ -7,7 +7,7 @@ const path = process.argv; //valores de argumento
 //console.log(path[2]);
 //getFile(path[2]);
 
-function linksList(validate, result, identifier ="") {
+/* function linksList(validate, result, identifier ="") {
   if (validate) {
     console.log(
       chalk.yellowBright('Lista validada'),
@@ -20,7 +20,35 @@ function linksList(validate, result, identifier ="") {
       chalk.black.bgCyan(identifier),
       result)
     }  
+} */
+
+function linksList(validate, result, identifier = "") {
+  return new Promise((resolve, reject) => {
+    if (validate) {
+      validatedList(result)
+        .then(status => {
+          console.log(
+            chalk.yellowBright("Lista validada"),
+            chalk.black.bgCyan(identifier),
+            status
+          );
+          resolve(status);
+        })
+        .catch(error => {
+          console.error(error);
+          reject(error);
+        });
+    } else {
+      console.log(
+        chalk.yellowBright("Lista de links"),
+        chalk.black.bgCyan(identifier),
+        result
+      );
+      resolve(result);
+    }
+  });
 }
+
 
 function processText(arguments) {
   const filePath = arguments[2];
