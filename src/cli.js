@@ -1,35 +1,56 @@
 const {getFile, handleError} = require('./index.js')
 const fs = require('fs');
+const {validatedList} = require('./validation.js')
 const chalk = require('chalk')
 
-const path = process.argv;
+const path = process.argv; //valores de argumento 
 //console.log(path[2]);
 //getFile(path[2]);
 
-function linksList(result, identifier ="") {
-  console.log(
-    chalk.yellow('Lista de links'),
-    chalk.black.bgGreen(identifier),
-    result);
+function linksList(validate, result, identifier ="") {
+  if (validate) {
+    console.log(
+      chalk.yellowBright('Lista validada'),
+      chalk.black.bgCyan(identifier),
+      validatedList(result))
+
+  } else {
+    console.log (
+      chalk.yellowBright('Lista de links'),
+      chalk.black.bgCyan(identifier),
+      result)
+    }  
 }
 
 function processText(arguments) {
   const filePath = arguments[2];
+  const validate = arguments[3] === '--validate';
+
+  try {
+    fs.lstatSync(filePath);
+  } catch (erro) {
+      if (erro.code === 'ENOENT') {
+        console.log(chalk.red('Arquivo ou diretório não existe'))
+        return
+      }
+  }
+
   if (fs.lstatSync(filePath).isFile()) {
-    getFile(filePath)
+   getFile(filePath)
       .then((result) => {
-        linksList(result)
+        linksList(validate, result)
       })
       .catch((erro) => {
         console.log(chalk.red('Ocorreu um erro com o arquivo informado. Por favor reveja as informações'))
       });
-  } else if (fs.lstatSync(filePath).isDirectory()) {
-    fs.promises.readdir(filePath)
-      .then((files) => {
+      
+    } else if (fs.lstatSync(filePath).isDirectory()) {
+   fs.promises.readdir(filePath)
+      .then((files) => { 
         files.forEach((fileName => {
-          getFile(`${filePath}/${fileName}`)
+         const list = getFile(`${filePath}/${fileName}`)
           .then((list) =>{
-            linksList(list, fileName);
+            linksList(validate, list, fileName);
           })
           .catch((erro) => {
             console.log(chalk.red('Ocorreu um erro com o diretório informado. Por favor reveja as informações'))
@@ -50,6 +71,42 @@ processText(path);
 
 
 
+
+
+
+
+/* function processText(arguments) {
+  const filePath = arguments[2];
+  const validate = arguments[3] === '--validate';
+  //console.log(validate);
+  if (fs.lstatSync(filePath).isFile()) {
+    getFile(filePath)
+      .then((result) => {
+        linksList(validate, result)
+      })
+      .catch((erro) => {
+        console.log(chalk.red('Ocorreu um erro com o arquivo informado. Por favor reveja as informações'))
+      });
+      
+    } else if (fs.lstatSync(filePath).isDirectory()) {
+    fs.promises.readdir(filePath)
+      .then((files) => { 
+        files.forEach((fileName => {
+          getFile(`${filePath}/${fileName}`)
+          .then((list) =>{
+            linksList(validate, list, fileName);
+          })
+          .catch((erro) => {
+            console.log(chalk.red('Ocorreu um erro com o diretório informado. Por favor reveja as informações'))
+          })
+        }))
+        //console.log(files);
+      })
+      .catch((erro) => {
+        handleError(erro);
+      });
+  }
+} */
 
 
 

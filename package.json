@@ -25,8 +25,10 @@
     "test": "jest --verbose --coverage",
     "eslint": "eslint *.js test/",
     "pretest": "npm run eslint",
-    "cli": "node .src/cli.js"
+    "cli": "node src/cli.js ./file/teste.md",
+    "cli:validate": "node src/cli.js ./file/teste.md --validate"
   },
+ 
   "dependencies": {
     "chalk": "^4.0.0",
     "save-dev": "^0.0.1-security"
