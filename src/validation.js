@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 function extractLinks(arrLinks) {
     return arrLinks.map((objectLink) => Object.values(objectLink).join())
 }
@@ -12,9 +14,14 @@ function extractLinks(arrLinks) {
 
 function validatedList(linksList) {
     const links = extractLinks(linksList);
-    return checkStatus(links)
+    const status = checkStatus(links)
+    return status
       .then(status => {
-        return status;
+        //return status;
+        return linksList.map((object, index) => ({
+            ...object, 
+            status: status[index]
+        }))
       })
       .catch(error => {
         console.error(error);
@@ -22,20 +29,35 @@ function validatedList(linksList) {
       });
   }
   
-  function checkStatus(listURLs) {
+   function checkStatus(listURLs) {
     return Promise.all(
       listURLs.map(url => {
         return fetch(url)
           .then(response => {
-            return response.status;
+            return `${response.status} - ${response.statusText}`;
           })
           .catch(error => {
-            throw error;
+            try {
+                throw error;
+              } catch (erro) {
+                return manageErrors(erro);
+              }
           });
       })
-    );
-  }
+    )
+  };
+
   
+  function manageErrors(erro) {
+    if (erro.cause.code === 'ENOTFOUND') {
+        return 'Link não encontrado';
+    } else {
+        return 'Ocorreu algum erro';
+    }
+}
+
+    
+    //console.log(chalk.red('Algo deu errado'), erro);
 
 
 /* async function checkStatus (listURLs){
