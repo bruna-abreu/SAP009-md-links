@@ -25,7 +25,7 @@
     "test": "jest --verbose --coverage",
     "eslint": "eslint *.js test/",
     "pretest": "npm run eslint",
-    "cli": "node src/cli.js" 
+    "md-links": "node ./src/cli.js"
   },
  
   "dependencies": {
