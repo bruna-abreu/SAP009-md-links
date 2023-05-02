@@ -1,0 +1,1 @@
+// testando arquivo com outra extensão
