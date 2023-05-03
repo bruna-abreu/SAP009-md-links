@@ -21,11 +21,13 @@
     "version": "5.6.0",
     "commit": "ffa75c8b2bede153844195479abeff01f3e34227"
   },
+  "bin": {
+    "md-links": "./src/cli.js"
+    },
   "scripts": {
     "test": "jest --verbose --coverage",
     "eslint": "eslint *.js test/",
-    "pretest": "npm run eslint",
-    "md-links": "node ./src/cli.js"
+    "pretest": "npm run eslint"
   },
  
   "dependencies": {
