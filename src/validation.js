@@ -1,5 +1,7 @@
 const chalk = require("chalk");
 
+
+//checa o status de cada link analisado
 function checkStatus(listOfURLs) {
   return Promise.all(
     listOfURLs.map((url) => {
@@ -22,6 +24,7 @@ function checkStatus(listOfURLs) {
   )
 }
 
+//retorna uma lista de objetos com as informações de cada link
 function validatedList (listOfLinks) {
   return checkStatus(listOfLinks.map((targetLink) => targetLink.href))
   .then((status) => {
@@ -31,6 +34,8 @@ function validatedList (listOfLinks) {
     }));
   });
 }
+
+
 
 
 module.exports = {checkStatus, validatedList}
