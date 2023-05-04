@@ -2,17 +2,7 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const {isFile, isDirectory, mdLinks} = require('../src/index.js');
-
-
-
-/* describe('mdLinks', () => {
-
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
-
-});
- */
+const assert = require('assert');
 
 describe('isFile', () => {
   it('should be a function', () => {
@@ -26,6 +16,56 @@ describe('isDirectory', () => {
   });
 });
 
+describe('mdLinks', () => {
+
+  it('show an error if its not a file', () => {
+    const logSpy = jest.spyOn(global.console, 'log');
+    mdLinks('./teste.html',{})
+
+    expect(logSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(`${chalk.redBright('Arquivo ou diretório não existe')}`);
+    //expect(logSpy.mock.calls[0]).toContainEqual(['Arquivo ou diretório não existe']);
+
+    logSpy.mockRestore();
+  })
+
+  it('show an error if its not a directory', () => {
+    const logSpy = jest.spyOn(global.console, 'log');
+    mdLinks('./folder',{})
+
+    expect(logSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(`${chalk.redBright('Arquivo ou diretório não existe')}`);
+    //expect(logSpy.mock.calls[0]).toContainEqual(['Arquivo ou diretório não existe']);
+
+    logSpy.mockRestore();
+  })
+
+  it('show an error if its not a file is not md', () => {
+    const logSpy = jest.spyOn(global.console, 'log');
+    mdLinks('./file/teste.js',{})
+
+    expect(logSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(`${chalk.redBright('Extensão inválida')}`);
+    //expect(logSpy.mock.calls[0]).toContainEqual(['Arquivo ou diretório não existe']);
+
+    logSpy.mockRestore();
+  })
+
+  it('show an error if its not a file is not md',async () => {
+    const logSpy = jest.spyOn(global.console, 'log');
+   await mdLinks('./file/teste.md',{validate:false, stats:false})
+
+    expect(logSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(`${chalk.redBright('Extensão inválida')}`);
+    //expect(logSpy.mock.calls[0]).toContainEqual(['Arquivo ou diretório não existe']);
+
+    logSpy.mockRestore();
+  })
+})
 
 
 
@@ -33,15 +73,13 @@ describe('isDirectory', () => {
 
 
 
-/* describe('mdLinks', () => {
-  test('should return a list of links', async () => {
-    const options = { validate: false, stats: false };
-    const path = './example.md';
 
-    const result = await mdLinks(path, options);
-    expect(result).toEqual([
-      { text: 'Link 1', href: 'http://example.com/1', file: './example.md' },
-      { text: 'Link 2', href: 'http://example.com/2', file: './example.md' },
-    ]);
-  });
-}); */
+
+
+
+
+
+
+
+
+
