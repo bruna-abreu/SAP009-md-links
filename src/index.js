@@ -1,23 +1,8 @@
 const fs = require('fs') //permite trabalhar com o sistema de arquivos
 const chalk = require('chalk');
-const {validatedList} = require('./validation.js')
-const {checkStatusOfLinks} = require('./stats.js')
+const {extractLinks, validatedList, checkStatusOfLinks} = require('./validation-stats.js')
 
-function extractLinks(filePath) {
-  const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
 
-  return fs.promises.readFile(filePath, 'utf-8')
-    .then((text) => {
-      const captures = [...text.matchAll(regex)];
-      const results = captures.map((capture) => ({
-        text: capture[1],
-        href: capture[2],
-        file: filePath
-      }));
-      return results;
-    })
-    .catch((erro) => {throw new Error(chalk.redBright(erro.code, 'O diretório indicado não possui arquivo'))});
-}
 
 // fs.lstatSync é usado para verificar informações sobre arquivos e diretórios em um sistema de arquivos Node.js.
 //verifica se o caminho recebido como argumento é um arquivo
@@ -116,4 +101,4 @@ function mdLinks(path, options) {
   }
 }
 
-module.exports = {mdLinks};
+module.exports = {extractLinks, isFile, isDirectory, mdLinks};

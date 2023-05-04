@@ -26,7 +26,7 @@
     },
   "scripts": {
     "test": "jest --verbose --coverage",
-    "eslint": "eslint *.js test/",
+    "eslint": "eslint --ext .js src/ test/",
     "pretest": "npm run eslint"
   },
  
