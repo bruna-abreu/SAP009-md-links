@@ -59,7 +59,7 @@ function mdLinks(path, options) {
           } else if (links.length === 0) {
             console.log(chalk.redBright('\n', 'Não há links no arquivo'))
             } else {
-              console.log(chalk.black.bgRgb(255, 195, 77)('Lista de links:')),
+              console.log(chalk.black.yellow('Lista de links:')),
               links.map(({text, href, file}) => console.log(` \n texto: ${chalk.magentaBright(text)} \n link: ${chalk.blueBright(href)} \n diretório: ${chalk.greenBright(file)}`));
             }
         });
