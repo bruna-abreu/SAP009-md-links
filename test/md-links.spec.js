@@ -2,7 +2,6 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const {isFile, isDirectory, mdLinks} = require('../src/index.js');
-const assert = require('assert');
 
 describe('isFile', () => {
   it('should be a function', () => {
@@ -54,7 +53,7 @@ describe('mdLinks', () => {
     logSpy.mockRestore();
   })
 
-  it('show an error if its not a file is not md',async () => {
+  it('show an error if its not is not md',async () => {
     const logSpy = jest.spyOn(global.console, 'log');
    await mdLinks('./file/teste.md',{validate:false, stats:false})
 

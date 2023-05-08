@@ -3,8 +3,78 @@ const chalk = require('chalk');
 const {extractLinks, validatedList, checkStatusOfLinks} = require('./validation-stats.js')
 
 
+function isFile(path) {
+  try {
+    return fs.lstatSync(path).isFile();
+  } catch (error) {
+    return false;
+  }
+}
 
-// fs.lstatSync é usado para verificar informações sobre arquivos e diretórios em um sistema de arquivos Node.js.
+function isDirectory(path) {
+  try {
+    return fs.lstatSync(path).isDirectory();
+  } catch (error) { 
+    return false;
+  }
+}
+
+//path (caminho do arquivo ou diretório a ser analisado)
+//options (um objeto que contém opções para a análise, validate e stats)
+
+//coordena a análise do arquivo ou diretório
+function mdLinks(path, options) {
+  if (!isFile(path) && !isDirectory(path)) {
+    console.log(chalk.redBright('\nArquivo ou diretório não existe'));
+    return;
+  }
+   if (isDirectory(path)) {
+    return fs.promises.readdir(path)
+      .then(files => {
+        return Promise.all(files.map((fileName) => {
+          const filePath = `${path}/${fileName}`;
+          return extractLinks(filePath)
+            .then(result => {
+              return validateOptions (options, result)
+            })
+        }));
+      });
+  }
+  if (isFile(path)) {
+    if (!path.endsWith('.md')) {
+      extractLinks(path);
+      console.log(chalk.redBright('Extensão inválida'));
+    } else {
+      return extractLinks(path)
+        .then(links => {
+          return validateOptions (options, links)
+        });
+     }
+  }
+}
+
+function validateOptions (options, links) {
+  if (options.stats && options.validate) {
+    return checkStatusOfLinks(links)
+   } else if (options.stats) {
+    return checkStatusOfLinks(links)
+   } else if (options.validate) {
+     return validatedList(links)
+   } else {
+     return links
+   }
+}
+
+module.exports = {isFile, isDirectory, mdLinks};
+
+
+
+
+
+
+
+
+/* // fs.lstatSync é usado para verificar informações sobre arquivos e diretórios em um sistema de arquivos Node.js.
 //verifica se o caminho recebido como argumento é um arquivo
 function isFile(path) {
   try {
@@ -43,24 +113,24 @@ function mdLinks(path, options) {
           if (options.stats && options.validate) {
             checkStatusOfLinks(links)
               .then(({ totalLinks, uniqueLinks, brokenLinks }) => {
-                console.log(chalk.black.rgb(255, 195, 77)(`\nEstatísticas dos links:\n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.blueBright('Broken:')} ${chalk.blueBright(brokenLinks)}`))
+                console.log(chalk.black.bgYellowBright(`\nEstatísticas dos links:\n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.blueBright('Broken:')} ${chalk.blueBright(brokenLinks)}`))
               })
           } else if (options.stats) {
             checkStatusOfLinks(links)
               .then(({ totalLinks, uniqueLinks }) => {
-                console.log(chalk.black.rgb(255, 195, 77)(`\nEstatísticas dos links: \n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}`))
+                console.log(chalk.black.bgYellowBright(`\nEstatísticas dos links: \n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}`))
               })
           } else if (options.validate) {
             validatedList(links)
               .then((category) => {
-                console.log(chalk.black.rgb(255, 195, 77)('Lista de links validados:\n')),
+                console.log(chalk.black.bgYellowBright('\nLista de links validados:\n')),
                 category.map(({text, href, file, status}) => console.log(`${chalk.greenBright(file)} | ${chalk.magentaBright(text)} | ${chalk.blueBright(href)} | ${status} `))
               });
           } else if (links.length === 0) {
             console.log(chalk.redBright('\n', 'Não há links no arquivo'))
             } else {
-              console.log(chalk.black.yellow('Lista de links:')),
-              links.map(({text, href, file}) => console.log(` \n texto: ${chalk.magentaBright(text)} \n link: ${chalk.blueBright(href)} \n diretório: ${chalk.greenBright(file)}`));
+              console.log(chalk.black.bgYellowBright('\nLista de links:')),
+              links.map(({text, href, file}) => console.log(`\n texto: ${chalk.magentaBright(text)} \n link: ${chalk.blueBright(href)} \n diretório: ${chalk.greenBright(file)}`));
             }
         });
      }
@@ -75,30 +145,30 @@ function mdLinks(path, options) {
               if (options.stats && options.validate) {
                 checkStatusOfLinks(result)
                 .then(({totalLinks, uniqueLinks, brokenLinks}) => {
-                  console.log(chalk.black.rgb(255, 195, 77)(`\nEstatísticas dos links do arquivo: ${chalk.underline.cyanBright(fileName)} \n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.blueBright('Broken:')} ${chalk.blueBright(brokenLinks)}`))
+                  console.log(chalk.black.black.bgYellowBright(`\nEstatísticas dos links do arquivo: ${chalk.underline.cyanBright(fileName)} \n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.blueBright('Broken:')} ${chalk.blueBright(brokenLinks)}`))
                 })
               } else if (options.stats) {
                 checkStatusOfLinks(result)
                   .then(({totalLinks, uniqueLinks}) => {
-                    console.log(chalk.black.rgb(255, 195, 77)(`\nEstatísticas dos links do arquivo: ${chalk.underline.cyanBright(fileName)}\n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}`))
+                    console.log(chalk.black.yellowBright(`\nEstatísticas dos links do arquivo: ${chalk.underline.cyanBright(fileName)}\n${chalk.greenBright('Total:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}`))
                   })
               } else if (options.validate) {
                 validatedList(result)
                   .then((result) => {
-                    console.log(chalk.rgb(255, 195, 77)(`\nLista de links validados: ${chalk.underline.cyanBright(fileName)}\n`)),
+                    console.log(chalk.yellowBright(`\nLista de links validados: ${chalk.underline.cyanBright(fileName)}\n`)),
                     result.map(({text, href, file, status}) => console.log(`${chalk.greenBright(file)} | ${chalk.magentaBright(text)} | ${chalk.blueBright(href)} | ${status} `))
                   });
               } else if (result.length === 0) {
                 console.log(chalk.redBright(`\n Não há links no arquivo ${chalk.underline.redBright(fileName)}`))
                 } else {
-                  console.log(chalk.black.bgRgb(255, 195, 77)('\n Lista de links:'),
-                  chalk.cyanBright(fileName)),
+                  console.log(chalk.black.bgYellowBright('\nLista de links:'),
+                  chalk.underline.cyanBright(fileName)),
                   result.map(({text, href, file}) => console.log(`\n texto: ${chalk.magentaBright(text)} \n link: ${chalk.blueBright(href)} \n diretório: ${chalk.greenBright(file)}`));
                }
             })
         });
       });
   }
-}
+} */
 
-module.exports = {extractLinks, isFile, isDirectory, mdLinks};
+//module.exports = {extractLinks, isFile, isDirectory, mdLinks};
