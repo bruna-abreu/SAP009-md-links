@@ -40,6 +40,7 @@ function checkStatus(listOfURLs) {
   )
 }
 
+
 //retorna uma lista de objetos com as informações de cada link
 function validatedList (listOfLinks) {
   return checkStatus(listOfLinks.map((targetLink) => targetLink.href))
@@ -60,6 +61,8 @@ function checkStatusOfLinks (listOfLinks) {
     const brokenLinks = linkStatus.filter(status => status.startsWith(chalk.redBright('☒ FAIL')) || status.startsWith(chalk.redBright('☐ Link não encontrado')) || status.startsWith(chalk.redBright('Ocorreu algum erro'))).length;
     return {totalLinks, uniqueLinks, brokenLinks};
   })
+
+  
 }
 
 module.exports = {extractLinks, checkStatus, validatedList, checkStatusOfLinks}

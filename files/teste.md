@@ -5,4 +5,4 @@ Texto teste
 [Link 3 inválido](https://medium.com/collabcode/meu-html-%C3%A9-sem%)
 
 [Teste de retorno 404](https://httpstat.us/404).
-[Link inexistente](https://testandoteste.com).
+
