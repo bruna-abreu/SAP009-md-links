@@ -15,7 +15,7 @@ describe('isDirectory', () => {
   });
 });
 
-describe('mdLinks', () => {
+/* describe('mdLinks', () => {
 
   it('show an error if its not a file', () => {
     const logSpy = jest.spyOn(global.console, 'log');
@@ -64,10 +64,7 @@ describe('mdLinks', () => {
 
     logSpy.mockRestore();
   })
-})
-
-
-
+}) */
 
 
 

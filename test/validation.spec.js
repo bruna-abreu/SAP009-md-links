@@ -7,7 +7,7 @@ describe('extractLinks', () => {
     })
   
     it('should extract all the links of a file', async () => {
-      const path = './file/teste2.md';
+      const path = './files/teste2.md';
       const listOfLinks = [
         {
           text: 'Link 1',
@@ -31,7 +31,7 @@ describe('extractLinks', () => {
     });
   
       it('should throw an error for an empty file', async () => {
-        const path = './file/empty-test.md';
+        const path = './files/empty-test.md';
         const erro = { code: 'ENOENT'};
   
         await expect(extractLinks(path)).rejects.toThrowError(

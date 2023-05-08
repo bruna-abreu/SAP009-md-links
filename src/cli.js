@@ -10,9 +10,9 @@ const options = {
 }
 
 
-
+try {
 mdLinks(path, options).then((response) => {
-  console.log(response)
+  //console.log(response)
   if (options.stats && options.validate) {
     showStatsAndValidate(response)
   } else if (options.stats) {
@@ -24,5 +24,5 @@ mdLinks(path, options).then((response) => {
   } else {
     showWhithoutFlags(response)
   }
-})
-.catch ((erro)=> console.log(chalk.redBright(erro.message)))
+})}
+catch (erro) {console.log(chalk.redBright(erro.message))}
