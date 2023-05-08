@@ -23,13 +23,12 @@
   },
   "bin": {
     "md-links": "./src/cli.js"
-    },
+  },
   "scripts": {
     "test": "jest --verbose --coverage",
     "eslint": "eslint --ext .js src/ test/",
     "pretest": "npm run eslint"
   },
- 
   "dependencies": {
     "chalk": "^4.0.0",
     "save-dev": "^0.0.1-security"
