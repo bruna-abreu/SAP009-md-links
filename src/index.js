@@ -25,8 +25,8 @@ function isDirectory(path) {
 //coordena a análise do arquivo ou diretório
 function mdLinks(path, options) {
   if (!isFile(path) && !isDirectory(path)) {
-    console.log(chalk.redBright('\nArquivo ou diretório não existe'));
-    return;
+    //console.log(chalk.redBright('\nArquivo ou diretório não existe'));
+    throw new Error('\nArquivo ou diretório não existe');
   }
    if (isDirectory(path)) {
     return fs.promises.readdir(path)
@@ -42,8 +42,8 @@ function mdLinks(path, options) {
   }
   if (isFile(path)) {
     if (!path.endsWith('.md')) {
-      extractLinks(path);
-      console.log(chalk.redBright('Extensão inválida'));
+      //console.log(chalk.redBright('Extensão inválida'));
+      throw new Error('Extensão inválida')
     } else {
       return extractLinks(path)
         .then(links => {
