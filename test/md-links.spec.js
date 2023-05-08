@@ -99,9 +99,7 @@ describe('mdLinks', () => {
     const result = await mdLinks('./files/teste2.md', { validate: true });
     expect(result).toEqual(expected);
   }); */
-  
-  
-        
+
 })
 
 
