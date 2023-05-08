@@ -2,14 +2,14 @@ const chalk = require('chalk');
 
 
 function showStatsAndValidate(response) {
-    console.log(response)
- /*    if (Array.isArray(response)) {
+    //console.log(response)
+    if (Array.isArray(response)) {
       response.map(({totalLinks, uniqueLinks, brokenLinks}) => {
         console.log(chalk.black.yellowBright(`\nEstatísticas totais dos links:\n${chalk.greenBright('\nTotal:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.redBright('Broken:')} ${chalk.redBright(brokenLinks)}`))
       })
     } else {
       console.log(chalk.yellowBright(`\nEstatísticas totais dos links:\n${chalk.greenBright('\nTotal:')} ${chalk.greenBright(response.totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(response.uniqueLinks)}\n${chalk.redBright('Broken:')} ${chalk.redBright(response.brokenLinks)}`))
-    } */
+    }
 }
   
 function showStats(response) {

@@ -57,7 +57,7 @@ function checkStatusOfLinks (listOfLinks) {
 
   return checkStatus(listOfLinks.map((targetLink) => targetLink.href))
   .then((linkStatus) => {
-    const brokenLinks = linkStatus.filter(status => status.startsWith(chalk.redBright('☒ FAIL')) || status.startsWith(chalk.redBright('O link não foi encontrado')) || status.startsWith(chalk.redBright('Ocorreu algum erro'))).length;
+    const brokenLinks = linkStatus.filter(status => status.startsWith(chalk.redBright('☒ FAIL')) || status.startsWith(chalk.redBright('☐ Link não encontrado')) || status.startsWith(chalk.redBright('Ocorreu algum erro'))).length;
     return {totalLinks, uniqueLinks, brokenLinks};
   })
 }
