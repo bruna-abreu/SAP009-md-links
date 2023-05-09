@@ -9,10 +9,8 @@ const options = {
   stats: process.argv.includes('--stats'),
 }
 
-
 try {
 mdLinks(path, options).then((response) => {
-  //console.log(response)
   if (options.stats && options.validate) {
     showStatsAndValidate(response)
   } else if (options.stats) {

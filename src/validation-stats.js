@@ -31,15 +31,14 @@ function checkStatus(listOfURLs) {
       })
       .catch(error => {
         if (error.cause.code === 'ENOTFOUND') {
-          return chalk.redBright('☐ Link não encontrado');
+          return `${chalk.redBright('☐ Link não encontrado')}`;
         } else {
-          return chalk.redBright('Ocorreu algum erro');
+          return `${chalk.redBright('Ocorreu algum erro')}`;
         }
       })
     })
   )
 }
-
 
 //retorna uma lista de objetos com as informações de cada link
 function validatedList (listOfLinks) {
@@ -61,8 +60,6 @@ function checkStatusOfLinks (listOfLinks) {
     const brokenLinks = linkStatus.filter(status => status.startsWith(chalk.redBright('☒ FAIL')) || status.startsWith(chalk.redBright('☐ Link não encontrado')) || status.startsWith(chalk.redBright('Ocorreu algum erro'))).length;
     return {totalLinks, uniqueLinks, brokenLinks};
   })
-
-  
 }
 
 module.exports = {extractLinks, checkStatus, validatedList, checkStatusOfLinks}

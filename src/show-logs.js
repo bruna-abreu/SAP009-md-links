@@ -2,7 +2,6 @@ const chalk = require('chalk');
 
 
 function showStatsAndValidate(response) {
-    //console.log(response)
     if (Array.isArray(response)) {
       response.map(({totalLinks, uniqueLinks, brokenLinks}) => {
         console.log(chalk.black.yellowBright(`\nEstatísticas totais dos links:\n${chalk.greenBright('\nTotal:')} ${chalk.greenBright(totalLinks)}\n${chalk.magentaBright('Unique:')} ${chalk.magentaBright(uniqueLinks)}\n${chalk.redBright('Broken:')} ${chalk.redBright(brokenLinks)}`))
@@ -37,8 +36,6 @@ function showValidate(response) {
 function showWhithoutFlags(response) {
     if(response.every((item) => Array.isArray(item) || !item)) {
       response.forEach((item) => {
-        //console.log(item)
-                  //chalk.yellow(fileName)),
         if (item.length === 0) {
             console.log(chalk.redBright(`\nNão há links no arquivo`))
         } else {
