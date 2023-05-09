@@ -1,4 +1,3 @@
-//const mdLinks = require('../src/index');
 const fs = require('fs');
 const chalk = require('chalk');
 const {isFile, isDirectory, mdLinks} = require('../src/index.js');
@@ -26,9 +25,8 @@ describe('isDirectory', () => {
 });
 
 
-
-
 describe('mdLinks', () => {
+  
   it('should throw an error if file or directory dont exist', () => {
     expect(() => mdLinks('dont-exist.md')).toThrowError('Arquivo ou diretório não existe');
   });
@@ -75,32 +73,54 @@ describe('mdLinks', () => {
     expect(result).toHaveProperty('uniqueLinks', 3);
   });
 
-  /* it('should retur a list with validate links when the option --validate is being used', async () => {
-    const expected = [
-      {
-        text: 'Link 1',
-        href: 'https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element',
-        file: './files/teste2.md',
-        status: '☑ OK | 200'
-      },
-      {
-        text: 'Link 2',
-        href: 'https://medium.com/collabcode/meu-html-%C3%A9-sem%C3%A2ntico-e-o-seu-4e97c81c0c49',
-        file: './files/teste2.md',
-        status: '☑ OK | 200'
-      },
-      {
-        text: 'Teste de retorno 404',
-        href: 'https://httpstat.us/404',
-        file: './files/teste2.md',
-        status: '☒ FAIL | 404'
-      }
-    ];
-    const result = await mdLinks('./files/teste2.md', { validate: true });
-    expect(result).toEqual(expected);
-  }); */
 
-})
+  it('should return validated links if --validate option is being used', async () => {
+    const options = { validate: true };
+    const result = await mdLinks('./files/teste.md', options);
+    expect(result).toEqual([
+      {
+        href: 'https://developer.mozilla.org/pt-BR/docs/Web/HTML/Element',
+        text: 'Link 1 válido',
+        file: './files/teste.md',
+        status: `${chalk.greenBright('☑ OK')} | ${chalk.greenBright(200)}`
+      },
+      {
+        href: 'https://medium.com/collabcode/meu-html-%C3%A9-sem%C3%A2ntico-e-o-seu-4e97c81c0c49',
+        text: 'Link 2 válido',
+        file: './files/teste.md',
+        status: `${chalk.greenBright('☑ OK')} | ${chalk.greenBright(200)}`
+      },
+      {
+        href: 'https://medium.com/collabcode/meu-html-%C3%A9-sem%',
+        text: 'Link 3 inválido',
+        file: './files/teste.md',
+        status: `${chalk.redBright('☒ FAIL')} | ${chalk.redBright(400)}`
+      },
+      {
+        href: 'https://httpstat.us/404',
+        text: 'Teste de retorno 404',
+        file: './files/teste.md',
+        status: `${chalk.redBright('☒ FAIL')} | ${chalk.redBright(404)}`
+      },
+      {
+        href: 'http://gatinhosalsicha.com.br/',
+        text: 'gatinho salsicha',
+        file: './files/teste.md',
+        status: `${chalk.redBright('☐ Link não encontrado')}`
+      },
+      ]);
+  })
+
+  it('should return an array of promises when given a directory', () => {
+    const path = './files';
+    const options = { validate: true, stats: false };
+    return mdLinks(path, options).then((result) => {
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(4); //qntd de arquivos dentro da pasta
+      expect(result[0]).toBeInstanceOf(Array);
+    });
+  });
+});
 
 
 

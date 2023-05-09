@@ -39,6 +39,7 @@ function mdLinks(path, options) {
         }));
       });
   }
+  
   if (isFile(path)) {
     if (!path.endsWith('.md')) {
       //console.log(chalk.redBright('Extensão inválida'));

@@ -24,8 +24,8 @@ describe('extractLinks', () => {
           href: 'https://httpstat.us/404',
           file: path
         },
-  
       ];
+      
       const list = await extractLinks(path);
       expect(list).toEqual(listOfLinks);
     });
