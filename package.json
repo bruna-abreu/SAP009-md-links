@@ -1,7 +1,7 @@
 {
-  "name": "md-links",
+  "name": "md-links-bruabreu",
   "version": "0.1.0",
-  "description": "4º projeto da Laboratória",
+  "description": "4º projeto da Laboratória - Md-Links",
   "main": "index.js",
   "keywords": [
     "node",
@@ -9,6 +9,7 @@
     "cli"
   ],
   "author": "Bruna Abreu",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/bruna-abreu/SAP009-md-links"
@@ -31,6 +32,7 @@
   },
   "dependencies": {
     "chalk": "^4.0.0",
+    "md-links-bruabreu": "^0.1.0",
     "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
