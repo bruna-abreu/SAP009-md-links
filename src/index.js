@@ -43,7 +43,7 @@ function mdLinks(path, options) {
   if (isFile(path)) {
     if (!path.endsWith('.md')) {
       //console.log(chalk.redBright('Extensão inválida'));
-      throw new Error('Extensão inválida')
+      throw new Error('\nExtensão inválida')
     } else {
       return extractLinks(path)
         .then(links => {
